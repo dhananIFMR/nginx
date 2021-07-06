@@ -1,0 +1,436 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Dash</title>
+    <meta charset="utf-8">
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- CSS only -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+        integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+
+        const SANKALP_EMBED_KEYS_URL = "https://sankalptest.cdfi.co.in/auth/local/embed";
+
+        var resp;
+
+        var chartUrls = [
+            {   //Chart 1
+                "iframe": 'iframei1',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60cc3f9e9bff6a731a478d65?"
+            },
+            {   //Chart 2
+                "iframe": 'iframei2',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60cc3f9e9bff6a731a478d67?"
+            },
+            {   //Chart 3
+                "iframe": 'iframei3',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60cc3f9e9bff6a731a478d66?"
+            },
+            {   //Chart 4
+                "iframe": 'iframei4',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60d03ec69bff6a731a479459?"
+            },
+            {   //Chart 5
+                "iframe": 'iframei5',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60d5bcf0dce77036cf8c3ca8?"
+            },
+            {   //Chart 6
+                "iframe": 'iframei6',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60cd8b969bff6a731a479222?"
+            },
+            {   //Chart 7
+                "iframe": 'iframei7',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60cd8b969bff6a731a479220?"
+            },
+            {   //Chart 8
+                "iframe": 'iframei8',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60cd8b969bff6a731a479221?"
+            },
+            {   //Chart 9
+                "iframe": 'iframei9',
+                "url": "https://sankalptest.cdfi.co.in/render/chart/60cc38779bff6a731a478cde?"
+            },
+        ];
+
+        var defthemeparams = [
+            {   //Chart 1
+            },
+            {   //Chart 2
+            },
+            {   //Chart 3
+            },
+            {   //Chart 4
+            },
+            {   //Chart 5
+            },
+            {   //Chart 6
+            },
+            {   //Chart 7
+            },
+            {   //Chart 8
+            },
+            {   //Chart 9
+            },
+        ];
+
+        var getSankalpAuthToken = () => {
+            const loginHttp = new XMLHttpRequest();
+            loginHttp.open("GET", SANKALP_EMBED_KEYS_URL, true)
+            loginHttp.setRequestHeader("Content-type", "application/json");
+            let requestBody = JSON.stringify({ "embed": true });
+            loginHttp.send(requestBody);
+
+            loginHttp.onreadystatechange = (e) => {
+                console.log("in logs");
+                if (loginHttp.responseText && loginHttp.responseText !== '') {
+                    resp = JSON.parse(loginHttp.responseText);
+
+                    if (resp && resp.key && resp.key.length > 0) {
+                        getiframe(defthemeparams);
+                    }
+                }
+            }
+        }
+
+        function getiframe(themeparams) {
+            if (resp && resp.key && resp.key.length > 0) {
+                for (i = 0; i < chartUrls.length; i++) {
+                    let iframe = document.getElementById(chartUrls[i].iframe);
+                    if (iframe.contentWindow) {
+                        iframe.src = "".concat(
+                            chartUrls[i].url,
+                            "c=", themeparams[i].c,
+                            "&bc=", themeparams[i].bc,
+                            "&t=corp",
+                            "&h=", themeparams[i].h,
+                            "&key=", resp.key);
+                    }
+                }
+            }
+        }
+
+    </script>
+
+</head>
+
+<body onload="getSankalpAuthToken()">
+
+    <div class="container-fluid pr-0 pl-0" id="body">
+
+        <div id="header"></div>
+        <script>
+            $(function () {
+                $("#header").load("headermain.html");
+            });
+        </script>
+
+        <div class="container overviewpage pl-3 pr-3">
+
+            <div class="row">
+
+                <!-- Start: Approach -->
+                <div class="col-sm">
+                    <h3><a>Approach</a></h3>
+
+                    <div class="overbox">
+                        <p class="overview_txt">The dashboard will feature results from six cycles of surveys that will
+                            be conducted from May 2020 till August 2021.
+                        </p>
+                        <p class="overview_txt">
+                            Currently, data is available for the following four cycles conducted between May 2020 to
+                            January 2021:
+                        </p>
+                        <p class="overview_txt">
+                            Cycle 1: May to June 2020
+                        </p>
+                        <p class="overview_txt">
+                            Cycle 2: July to August 2020
+                        </p>
+                        <p class="overview_txt">
+                            Cycle 3: September to October 2020
+                        </p>
+                        <p class="overview_txt">
+                            Cycle 4 : December to January 2021
+                        </p>
+                    </div>
+
+                    <iframe id='iframei1' title='iframei1' class='small-frame' frameborder="0"></iframe>
+                    <br>
+
+                    <div class="voicebox">
+                        <h3>STORIES FROM THE FIELD</h3>
+                        <div class="voicebluebox">
+                            <div class="voiceleft">
+                                <img src="assets/business1.png" , class="voiceimg"> </img>
+                            </div>
+                            <div class="voicergt">
+                                <q>Everything is so uncertain that nothing can be said about the future. But, we are
+                                    taking this as a long term process. We have to get through 4 more months. Nothing
+                                    can be normal this year, but surely from 2021, we will be back on track!
+                                </q>
+                                <p>Chandra, Karur District in Tamil Nadu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End: Approach -->
+
+                <!-- Start: Survey Method -->
+                <div class="col-sm">
+                    <h3><a>Survey Method</a></h3>
+                    <div class="overbox">
+                        <p class="overview_txt">Our stratified, convenience sample was drawn from various sub-industries
+                            in manufacturing, services and trade to provide a sectoral representation of
+                            microbusinesses. The sample was selected from lists provided by partner organizations. The
+                            following regions and states are being covered in the survey:-
+                        </p>
+                        <p class="overview_txt">
+                            North region: Delhi, Haryana, Punjab and Uttar Pradesh, West region: Gujarat and Maharashtra
+                            and South region: Tamil Nadu. The surveys are translated into regional languages and
+                            administered remotely, over phone.
+
+                        </p>
+                    </div>
+
+                    <iframe id='iframei2' title='iframei2' class='small-frame' frameborder="0"></iframe>
+                    <br>
+
+                    <div class="voicebox">
+                        <h3>STORIES FROM THE FIELD</h3>
+                        <div class="voicebluebox">
+                            <div class="voiceleft">
+                                <img src="assets/cash11.png" class="voiceimg"> </img>
+                            </div>
+                            <div class="voicergt">
+                                <q>I borrow money from friends for purchasing stocks and I’ve taken gold loans to pay
+                                    the salaries and maintenance bills. My problem is only 20% of customers pay
+                                    immediately and the remaining 80% people purchase all on credit
+                                </q>
+                                <p> Small grocery business owner from Thiruvallur in Tamil Nadu. </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End: Survey Method -->
+
+            </div>
+
+            <div class="row">
+
+                <div class="col-sm">
+
+                    <iframe id='iframei3' title='iframei3' class='small-frame' frameborder="0"></iframe>
+                    <br>
+
+                    <div class="voicebox vbtop">
+                        <h3>STORIES FROM THE FIELD</h3>
+                        <div class="voicebluebox">
+                            <div class="voiceleft">
+                                <img src="assets/emp2.png" , class="voiceimg"> </img>
+                            </div>
+                            <div class="voicergt">
+                                <q>Despite this situation, laying off workers was not something I considered. Instead, I
+                                    had a conversation with my workers about their preferences. Based on that
+                                    discussion, I continue to pay 2 of my staff who were willing to come in to work and
+                                    retained the others
+                                </q>
+                                <p>Vengadesh – Owner welding workshop in the small town of Tirunelveli in Tamil Nadu
+                                    employs 7 people
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm">
+
+                    <iframe id='iframei4' title='iframei4' class='small-frame' frameborder="0"></iframe>
+                    <br>
+
+                    <div class="voicebox">
+                        <h3>STORIES FROM THE FIELD</h3>
+                        <div class="voicebluebox">
+                            <div class="voiceleft">
+                                <img src="assets/house3.png" class="voiceimg"> </img>
+                            </div>
+                            <div class="voicergt">
+                                <q>Being a female, even life prior to lockdown was tough as domestic responsibilities
+                                    are definitely a priority. I recall the struggle to convince my husband to let me
+                                    start my own cloth bag business. Now when I employ 13 women and have trained 4000
+                                    women, he has started to support me in training and expanding more as he sees I'm
+                                    doing well financially. Though, managing business is always interrupted by necessity
+                                    to deal with household chores, so I wake up early at 5am to ensure I manage all
+                                    domestic duties and then head to my shop at 9am.
+                                </q>
+                                <p>Vidya Kirve, Satara Branch, Maharashtra </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div class="row space">
+
+                <!-- Start: Financial Performance -->
+                <div class="col-sm">
+
+                    <h3><a>Financial Performance</a></h3>
+
+                    <div class="overbox">
+                        <div class="block">
+                            <b>Insights: </b>
+                            <span class="overview_txt">The overall sales and profits of small businesses have increased
+                                over
+                                the period, but is still lower than the pre-lockdown (March 2020) levels.
+                            </span>
+                        </div>
+                        <div class="block">
+                            <b>Description: </b>
+                            <span class="overview_txt">Businesses showcased growth (CAGR) in sales figures by 16.78%,
+                                and in profit by 9.04%. The overall business performance, meanwhile, painted a bleak
+                                picture where only 21% of the businesses stated that they are performing better than
+                                March 2020.
+
+                            </span>
+                        </div>
+                    </div>
+
+                    <iframe id='iframei5' title='iframei5' class='small-frame' frameborder="0"></iframe>
+                    <br>
+
+                </div>
+                <!-- End: Financial Performance -->
+
+                <!-- Start: Cash reserves/personal savings -->
+                <div class="col-sm">
+                    <h3><a>Cash reserves/personal savings</a></h3>
+
+                    <div class="overbox">
+                        <div class="block">
+                            <b>Insights: </b>
+                            <span class="overview_txt">Cash reserves have been consistently depleted, eating up the
+                                personal savings of business owners.
+                            </span>
+                        </div>
+                        <div class="block">
+                            <b>Description: </b>
+                            <span class="overview_txt">Cashflow disruption due to low sales has been reported as the
+                                biggest
+                                challenge across most enterprises. In the first cycle while 40% enterprises reported to
+                                have
+                                cash reserves, 65% of them reported to have used their personal savings to tide over the
+                                crisis, largely due to the government sanctioned lockdown. The businesses witnessed
+                                increased pressure in their cash reserves over the period and they had to rely on their
+                                personal savings to overcome the initial strains.
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <iframe id='iframei6' title='iframei6' class='small-frame' frameborder="0"></iframe>
+                    <br>
+
+                </div>
+                <!-- End: Cash reserves/personal savings -->
+
+            </div>
+
+
+            <div class="row">
+
+                <!-- Start: Employment across Industries -->
+                <div class="col-sm">
+
+                    <h3><a>Employment across Industries</a></h3>
+
+                    <div class="overbox">
+                        <div class="block">
+                            <b>Insights: </b>
+                            <span class="overview_txt">The rising trends in layoff figures correspond to the decline in
+                                availability of cash reserves while hiring seems more driven by actual/anticipated
+                                demand.
+                            </span>
+                        </div>
+                        <div class="block">
+                            <b>Description: </b>
+                            <span class="overview_txt">Service sector firms reported higher layoffs as a correcting
+                                mechanism to tide over the crisis. Post this, they have been showcasing higher sales and
+                                profits and even tend to hire more in the future. Layoffs among manufacturing firms have
+                                been more consistent across the cycles, given the nature of the sector where
+                                labour-related compliances are higher. The intention to hire has also been consistent,
+                                after initial shocks in cycle 1, suggesting optimism.
+                            </span>
+                        </div>
+                    </div>
+
+                    <iframe id='iframei7' title='iframei7' class='small-frame' frameborder="0"></iframe>
+                    <br>
+                    <iframe id='iframei8' title='iframei8' class='small-frame' frameborder="0"></iframe>
+
+                </div>
+                <!-- End: Employment across Industries -->
+
+                <!-- Start: Challenges to operate business -->
+                <div class="col-sm">
+                    <h3><a>Challenges to operate business</a></h3>
+
+                    <div class="overbox">
+                        <div class="block">
+                            <b>Insights: </b>
+                            <span class="overview_txt">Across all cycles, low sales/customer footfall has been the
+                                greatest challenge for small businesses.
+                            </span>
+                        </div>
+                        <div class="block">
+                            <b>Description: </b>
+                            <span class="overview_txt">The low sales and customer footfall has been a constant challenge
+                                for businesses from cycle 1, where 86% of business owners cited this as their major
+                                challenge, till cycle 4, where 72% of them cited the same. Shortage of raw materials was
+                                a bigger challenge in cycle 1 given the impact of lockdown, while petty cash management
+                                is reported to be a bigger challenge in cycle 3 given the vagaries of the sector.
+                                Inadequate working capital aligned with the pressures on cash reserves for the
+                                businesses.
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <iframe id='iframei9' title='iframei9' class='small-frame' frameborder="0"></iframe>
+                    <br>
+
+                </div>
+                <!-- End: Challenges to operate business -->
+
+            </div>
+
+        </div>
+
+        <div id="footer"></div>
+        <script>
+            $(function () {
+                $("#footer").load("footermain.html");
+            });
+        </script>
+
+    </div>
+
+</body>
+
+</html>
